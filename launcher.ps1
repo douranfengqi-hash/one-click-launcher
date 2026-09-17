@@ -62,11 +62,18 @@ foreach ($app in $apps) {
                 # Elevated scheduled task: no UAC popup
                 schtasks /Run /TN "$taskName" | Out-Null
             }
-            elseif ($argStr) {
-                Start-Process -FilePath $target -ArgumentList $argStr
-            }
             else {
-                Start-Process -FilePath $target
+                # Working directory matters: a few apps (updaters, portable
+                # launchers) resolve their own paths relative to the CURRENT
+                # directory. Started without one they inherit this launcher
+                # folder and may unpack/copy a whole new version into it.
+                # Default = the exe's own folder; apps.json can override it.
+                $workDir = Expand-Value $app.workingDirectory
+                if (-not $workDir) { $workDir = Split-Path -Parent $target }
+
+                $spArgs = @{ FilePath = $target; WorkingDirectory = $workDir }
+                if ($argStr) { $spArgs.ArgumentList = $argStr }
+                Start-Process @spArgs
             }
         }
     }
