@@ -59,6 +59,10 @@
    不要要求用户关闭 UAC。
 7. 运行环境是 **Windows 10/11 + Windows PowerShell 5.1**，
    不要使用 PowerShell 7 专属语法（`??`、三元运算符 `?:`、`-Parallel` 等）。
+8. **启动 exe 必须显式指定工作目录**：`Start-Process -FilePath $exe -WorkingDirectory (Split-Path -Parent $exe)`；
+   计划任务同理，要设 `New-ScheduledTaskAction -WorkingDirectory`（否则默认是 `%SystemRoot%\System32`）。
+   原因：少数软件（自带更新器、绿色版启动器）按「当前目录」解析自己的路径，
+   不指定就会继承启动器文件夹，把整个新版本解压进去（实测踩过：凭空多出 1518 个文件、322 MB）。
 
 ## 交付标准
 
