@@ -1,0 +1,34 @@
+{
+  "shortcutName": "一键启动",
+  "iconSource": "",
+  "defaultDelaySeconds": 3,
+  "apps": [
+    {
+      "name": "Steam",
+      "id": "Steam",
+      "type": "url",
+      "target": "steam://open/main",
+      "needAdmin": false,
+      "delayAfterSeconds": 6,
+      "enabled": true
+    },
+    {
+      "name": "你的软件A",
+      "id": "AppA",
+      "type": "exe",
+      "target": "C:\\Program Files\\YourApp\\YourApp.exe",
+      "arguments": "",
+      "needAdmin": true,
+      "enabled": true
+    },
+    {
+      "name": "你的软件B",
+      "id": "AppB",
+      "type": "exe",
+      "target": "%ProgramFiles(x86)%\\YourApp2\\YourApp2.exe",
+      "needAdmin": false,
+      "delayAfterSeconds": 2,
+      "enabled": true
+    }
+  ]
+}
