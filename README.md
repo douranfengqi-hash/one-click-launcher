@@ -85,7 +85,7 @@
 | `target` | 是 | 路径或 URL，**支持环境变量**：`%ProgramFiles%`、`%ProgramFiles(x86)%`、`%USERPROFILE%` |
 | `arguments` | 否 | 启动参数 |
 | `needAdmin` | 否 | `true` 时走提权计划任务（不弹 UAC）。默认 `false` |
-| `workingDirectory` | 否 | 提权任务的工作目录（少数软件需要） |
+| `workingDirectory` | 否 | 启动时的工作目录。默认 = 该 exe 所在文件夹（**建议保持默认**，见下方 FAQ） |
 | `delayAfterSeconds` | 否 | 这一项启动后等待多少秒再启动下一项 |
 | `enabled` | 否 | `false` 可临时跳过该软件 |
 
@@ -140,6 +140,23 @@ A：三个可能：
 
 **Q：`setup.cmd` 窗口一闪就没了 / 显示 FAIL？**
 A：`setup-admin.ps1` 会把每一步结果写进同目录的 `setup.log`，打开看哪一条是 FAIL。
+
+**Q：用了一段时间后，启动器文件夹里突然多出一大堆别的软件的文件？**
+A：这是**工作目录**问题，也是本项目最容易踩的坑（v1 就踩过）。少数软件（自带更新器的、
+绿色版/便携版启动器）解析自己的路径时用的是「当前目录」而不是自身 exe 位置。
+如果启动它时不指定工作目录，它就会继承本启动器文件夹作为当前目录，
+于是它的更新器会把整个新版本解压到 `one-click-launcher` 里面 —— 几百 MB 的文件凭空出现。
+
+本仓库的脚本已经默认把工作目录设成**该 exe 自己所在的文件夹**（`launcher.ps1`
+用 `Start-Process -WorkingDirectory`，`setup-admin.ps1` 用任务的 `WorkingDirectory`），
+正常不会再发生。如果某个软件仍然乱写，就在 `apps.json` 里给它单独指定：
+```json
+{ "name": "某软件", "type": "exe", "target": "D:\\SomeApp\\launcher.exe",
+  "workingDirectory": "D:\\SomeApp", "needAdmin": false }
+```
+排查方法：在可疑软件启动后，按住 Shift 右键该文件夹 → 「在此处打开 PowerShell」，
+用 `Get-ChildItem | Sort-Object CreationTime -Descending | Select -First 10`
+看有没有一批「创建时间几乎相同、修改时间却各不相同」的文件 —— 那就是被整目录复制进来的。
 
 **Q：想开机自动启动？**
 A：把桌面「一键启动」快捷方式复制到 `shell:startup`（Win+R 输入即可打开该文件夹）。
