@@ -46,6 +46,7 @@
       "id": "LiveRobot",
       "type": "exe",
       "target": "D:\\BiliBiliLiveRobot\\BiliBiliLiveRobot-ProcessLauncher.exe",
+      "workingDirectory": "D:\\BiliBiliLiveRobot",
       "needAdmin": false
     },
     {
