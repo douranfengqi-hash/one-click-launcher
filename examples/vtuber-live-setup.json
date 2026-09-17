@@ -1,0 +1,59 @@
+{
+  "_comment": "示例：VTuber / 直播工作环境（作者本人在用的配置，路径请按自己电脑修改）",
+  "shortcutName": "一键启动",
+  "iconSource": "D:\\livehime\\livehime.exe,0",
+  "defaultDelaySeconds": 3,
+  "apps": [
+    {
+      "name": "Steam",
+      "id": "Steam",
+      "type": "url",
+      "target": "steam://open/main",
+      "needAdmin": false,
+      "delayAfterSeconds": 8
+    },
+    {
+      "name": "VBridger",
+      "id": "VBridger",
+      "type": "url",
+      "target": "steam://rungameid/1898830",
+      "needAdmin": false
+    },
+    {
+      "name": "酷狗音乐",
+      "id": "KuGou",
+      "type": "exe",
+      "target": "%ProgramFiles%\\KuGou\\KGMusic\\KuGou.exe",
+      "needAdmin": true
+    },
+    {
+      "name": "Studio One 6",
+      "id": "StudioOne",
+      "type": "exe",
+      "target": "%ProgramFiles%\\PreSonus\\Studio One 6\\Studio One.exe",
+      "needAdmin": true
+    },
+    {
+      "name": "VTube Studio",
+      "id": "VTS",
+      "type": "exe",
+      "target": "D:\\SteamLibrary\\steamapps\\common\\VTube Studio\\VTube Studio.exe",
+      "needAdmin": true,
+      "delayAfterSeconds": 5
+    },
+    {
+      "name": "梅花机器人",
+      "id": "LiveRobot",
+      "type": "exe",
+      "target": "D:\\BiliBiliLiveRobot\\BiliBiliLiveRobot-ProcessLauncher.exe",
+      "needAdmin": false
+    },
+    {
+      "name": "哔哩哔哩直播姬",
+      "id": "Livehime",
+      "type": "exe",
+      "target": "D:\\livehime\\livehime.exe",
+      "needAdmin": true
+    }
+  ]
+}
