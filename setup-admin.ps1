@@ -58,7 +58,12 @@ foreach ($app in @($config.apps)) {
 
         $actionArgs = @{ Execute = $exe }
         if ($argStr) { $actionArgs.Argument = $argStr }
-        if ($app.workingDirectory) { $actionArgs.WorkingDirectory = Expand-Value $app.workingDirectory }
+        # A scheduled task otherwise runs with %SystemRoot%\System32 as its working
+        # directory, which breaks apps that resolve paths relative to the current
+        # directory. Default to the exe's own folder unless apps.json overrides it.
+        $workDir = Expand-Value $app.workingDirectory
+        if (-not $workDir) { $workDir = Split-Path -Parent $exe }
+        if (Test-Path $workDir) { $actionArgs.WorkingDirectory = $workDir }
 
         $action  = New-ScheduledTaskAction @actionArgs
         # Trigger in the past on purpose: the task never runs by itself,
